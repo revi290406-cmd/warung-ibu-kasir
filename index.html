@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Warung Ibu - Kasir v5.0 Pro</title>
+<title>Warung Ibu - Kasir v5.1 Auto-Update</title>
 <meta name="theme-color" content="#0b111e">
 
 <!-- PWA & Mobile App Meta Tags -->
@@ -80,7 +80,7 @@
     transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
   }
 
-  /* ===== RESPONSIVE: PORTRAIT VS LANDSCAPE MODE (HP / MOBILE) ===== */
+  /* ===== RESPONSIVE: PORTRAIT VS LANDSCAPE MODE ===== */
   @media (orientation: landscape) and (max-height: 768px) {
     .app-container {
       max-width: 100% !important;
@@ -223,7 +223,7 @@
     <div class="flex justify-between items-center mb-5 section-divider border-b pb-3">
       <div>
         <h2 class="font-black text-lg text-accent">🏪 Warung Ibu</h2>
-        <p class="text-xs text-sub">Kasir Pintar v5.0 Pro</p>
+        <p class="text-xs text-sub">Kasir Pintar v5.1 Pro</p>
       </div>
       <button onclick="toggleSidebar()" class="text-sub hover:text-main text-xl font-bold p-1">✕</button>
     </div>
@@ -263,7 +263,7 @@
     </nav>
   </div>
   <div class="text-[11px] text-sub text-center section-divider border-t pt-3">
-    Warung Ibu Version 5.0 Pro
+    Warung Ibu Version 5.1 Auto-Sync
   </div>
 </aside>
 
@@ -597,42 +597,60 @@
 
 <!-- ====== JAVASCRIPT ENGINE ====== -->
 <script>
-// PWA Dynamic Manifest & Service Worker Setup for Offline & Standalone Mode
+// ===== ENGINE PWA NETWORK-FIRST (AUTO-UPDATE TANPA RIBET) =====
 if ('serviceWorker' in navigator) {
+  const APP_VERSION = 'v5.1-autoupdate-1';
   const swCode = `
-    const CACHE_NAME = 'warung-ibu-pwa-v1';
+    const CACHE_NAME = 'warung-ibu-${APP_VERSION}';
+
     self.addEventListener('install', e => {
-      e.waitUntil(
-        caches.open(CACHE_NAME).then(cache => {
-          return cache.addAll(['./']);
-        })
-      );
       self.skipWaiting();
     });
+
     self.addEventListener('activate', e => {
       e.waitUntil(
         caches.keys().then(keys => Promise.all(
           keys.map(key => { if (key !== CACHE_NAME) return caches.delete(key); })
-        ))
+        )).then(() => self.clients.claim())
       );
-      self.clients.claim();
     });
+
     self.addEventListener('fetch', e => {
+      const request = e.request;
+      // Strategi Network First untuk Halaman Utama HTML
+      if (request.mode === 'navigate' || (request.headers.get('accept') && request.headers.get('accept').includes('text/html'))) {
+        e.respondWith(
+          fetch(request)
+            .then(networkResponse => {
+              const resCopy = networkResponse.clone();
+              caches.open(CACHE_NAME).then(cache => cache.put(request, resCopy));
+              return networkResponse;
+            })
+            .catch(() => caches.match(request).then(cached => cached || caches.match('./')))
+        );
+        return;
+      }
+
+      // Stale-While-Revalidate / Cache First untuk Asset Lainnya
       e.respondWith(
-        caches.match(e.request).then(cached => {
-          return cached || fetch(e.request).then(response => {
-            return caches.open(CACHE_NAME).then(cache => {
-              cache.put(e.request, response.clone());
-              return response;
-            });
-          }).catch(() => caches.match('./'));
-        })
+        caches.match(request).then(cached => {
+          return cached || fetch(request).then(response => {
+            if (request.method === 'GET' && response.status === 200) {
+              const resCopy = response.clone();
+              caches.open(CACHE_NAME).then(cache => cache.put(request, resCopy));
+            }
+            return response;
+          });
+        }).catch(() => caches.match('./'))
       );
     });
   `;
+  
   const blob = new Blob([swCode], { type: 'application/javascript' });
   const swUrl = URL.createObjectURL(blob);
-  navigator.serviceWorker.register(swUrl).catch(err => console.log('SW error', err));
+  navigator.serviceWorker.register(swUrl).then(reg => {
+    reg.update(); // Cek update otomatis saat aplikasi dibuka
+  }).catch(err => console.log('SW Registration error:', err));
 }
 
 // Dynamic Web App Manifest
@@ -682,7 +700,7 @@ function installPWA() {
       if (installBtn) installBtn.classList.add('hidden');
     });
   } else {
-    alert('Aplikasi sudah terinstal atau browser Anda memerlukan izin tambahan. Anda juga bisa menggunakan menu "Tambahkan ke Layar Utama" di browser Anda.');
+    alert('Aplikasi sudah terinstal atau gunakan menu "Tambahkan ke Layar Utama" di browser Anda.');
   }
 }
 
@@ -895,14 +913,12 @@ function closeShiftConfirm() {
   }, 1200);
 }
 
-// ===== PERBAIKAN BUG AUDIO (AudioContext Singleton) =====
+// ===== AUDIO FEEDBACK SINGLETON =====
 let sharedAudioCtx = null;
 function getSharedAudioContext() {
   if (!sharedAudioCtx) {
     const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-    if (AudioContextClass) {
-      sharedAudioCtx = new AudioContextClass();
-    }
+    if (AudioContextClass) sharedAudioCtx = new AudioContextClass();
   }
   if (sharedAudioCtx && sharedAudioCtx.state === 'suspended') {
     sharedAudioCtx.resume();
@@ -1690,8 +1706,6 @@ function renderChart(omzet, profit, expense) {
 function exportExcel() {
   const now = new Date();
   const timeString = now.toLocaleString('id-ID', { dateStyle: 'full', timeStyle: 'medium' });
-  const todayOmzet = allTransactions.filter(t => isToday(t.date)).reduce((sum, t) => sum + t.subtotalOmzet, 0);
-  const todayProfit = allTransactions.filter(t => isToday(t.date)).reduce((sum, t) => sum + t.subtotalProfit, 0);
 
   let html = `
     <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
@@ -1770,6 +1784,7 @@ function importJSON(event) {
   reader.readAsText(file);
 }
 
+// Inisialisasi awal
 checkLowStock();
 renderKasirProducts();
 renderCartUI();
