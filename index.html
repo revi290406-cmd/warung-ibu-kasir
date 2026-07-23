@@ -121,6 +121,57 @@
 </head>
 <body class="app-bg text-main pb-24 min-h-screen">
 
+<!-- ====== TAMPILAN AUTH (LOGIN & DAFTAR) ====== -->
+<div id="auth-screen" class="fixed inset-0 z-[10000] app-bg flex items-center justify-center p-4">
+  <div class="card-bg p-6 rounded-3xl w-full max-w-sm border shadow-2xl space-y-4">
+    <div class="text-center">
+      <div class="text-5xl mb-2">🏪</div>
+      <h2 class="text-2xl font-black text-accent">Warung Ibu</h2>
+      <p class="text-xs text-sub mt-1">Aplikasi Kasir Pro Offline</p>
+    </div>
+
+    <!-- TAB LOGIN / DAFTAR -->
+    <div class="flex card-inner p-1 rounded-xl border text-xs font-bold">
+      <button id="auth-tab-login" onclick="switchAuthTab('login')" class="flex-1 py-2 rounded-lg bg-amber-500 text-slate-950 transition">Login</button>
+      <button id="auth-tab-register" onclick="switchAuthTab('register')" class="flex-1 py-2 rounded-lg text-sub transition">Daftar</button>
+    </div>
+
+    <!-- FORM LOGIN -->
+    <form id="form-login" onsubmit="handleLogin(event)" class="space-y-3">
+      <div>
+        <label class="text-xs text-sub font-semibold block mb-1">Username / Nama Kasir</label>
+        <input type="text" id="login-username" placeholder="Masukkan username" required class="input-bg w-full border p-3 rounded-xl text-xs">
+      </div>
+      <div>
+        <label class="text-xs text-sub font-semibold block mb-1">Password</label>
+        <input type="password" id="login-password" placeholder="••••••••" required class="input-bg w-full border p-3 rounded-xl text-xs">
+      </div>
+      <button type="submit" class="w-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-black py-3.5 rounded-xl text-xs active:scale-95 transition shadow-lg shadow-amber-500/20">
+        MASUK KE KASIR
+      </button>
+    </form>
+
+    <!-- FORM DAFTAR -->
+    <form id="form-register" onsubmit="handleRegister(event)" class="space-y-3 hidden">
+      <div>
+        <label class="text-xs text-sub font-semibold block mb-1">Nama Lengkap / Kasir</label>
+        <input type="text" id="reg-fullname" placeholder="Cth: Ibu Siti" required class="input-bg w-full border p-3 rounded-xl text-xs">
+      </div>
+      <div>
+        <label class="text-xs text-sub font-semibold block mb-1">Username Baru</label>
+        <input type="text" id="reg-username" placeholder="Cth: ibusiti" required class="input-bg w-full border p-3 rounded-xl text-xs">
+      </div>
+      <div>
+        <label class="text-xs text-sub font-semibold block mb-1">Password</label>
+        <input type="password" id="reg-password" placeholder="••••••••" required class="input-bg w-full border p-3 rounded-xl text-xs">
+      </div>
+      <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-3.5 rounded-xl text-xs active:scale-95 transition shadow-lg">
+        BUAT AKUN BARU
+      </button>
+    </form>
+  </div>
+</div>
+
 <!-- ====== MODAL: BUKA SHIFT ====== -->
 <div id="shift-open-modal" class="shift-modal-overlay hidden">
   <div class="modal-bg rounded-3xl p-6 w-80 max-w-[92vw] shadow-2xl border">
@@ -334,7 +385,7 @@
     <div class="flex justify-between items-center mb-5 section-divider border-b pb-3">
       <div>
         <h2 class="font-black text-lg text-accent">🏪 Warung Ibu</h2>
-        <p class="text-xs text-sub">Kasir Pintar v5.2 Pro</p>
+        <p class="text-xs text-sub" id="sidebar-user-name">Kasir Pintar v5.2 Pro</p>
       </div>
       <button onclick="toggleSidebar()" class="text-sub hover:text-main text-xl font-bold p-1">✕</button>
     </div>
@@ -371,6 +422,12 @@
         <span class="flex items-center gap-3"><span>⚙️</span> Pengaturan & Backup</span>
         <span class="text-[10px] btn-ghost border px-2 py-0.5 rounded font-bold text-accent">PIN</span>
       </button>
+      
+      <div class="pt-3 section-divider border-t mt-2">
+        <button onclick="handleLogout()" class="w-full text-left p-3.5 rounded-xl flex items-center gap-3 bg-red-500/10 text-red-400 font-semibold text-sm transition touch-btn border border-red-500/20">
+          <span>🚪</span> Keluar / Logout
+        </button>
+      </div>
     </nav>
   </div>
   <div class="text-[11px] text-sub text-center section-divider border-t pt-3">
@@ -838,6 +895,10 @@ let dailyTarget = parseInt(localStorage.getItem('warung_ibu_target')) || 300000;
 let adminPin = localStorage.getItem('warung_ibu_pin') || null;
 let currentShift = JSON.parse(localStorage.getItem('warung_ibu_current_shift')) || null;
 
+// SISTEM AUTHENTICATION LOCAL
+let users = JSON.parse(localStorage.getItem('warung_ibu_users')) || [];
+let currentUser = JSON.parse(localStorage.getItem('warung_ibu_current_user')) || null;
+
 let cart = [];
 let selectedCategory = 'All';
 let currentReportPeriod = 'daily';
@@ -845,6 +906,101 @@ let chartInstance = null;
 let givenCashAmount = 0;
 let currentTheme = localStorage.getItem('warung_ibu_theme') || 'dark';
 let activeReceiptTx = null;
+
+// ===== LOGIKA AUTHENTICATION =====
+function checkAuthOnLoad() {
+  const authScreen = document.getElementById('auth-screen');
+  if (!currentUser) {
+    authScreen.classList.remove('hidden');
+  } else {
+    authScreen.classList.add('hidden');
+    updateUserSidebarUI();
+  }
+}
+
+function switchAuthTab(tab) {
+  triggerFeedback();
+  const loginBtn = document.getElementById('auth-tab-login');
+  const regBtn = document.getElementById('auth-tab-register');
+  const formLogin = document.getElementById('form-login');
+  const formReg = document.getElementById('form-register');
+
+  if (tab === 'login') {
+    loginBtn.className = 'flex-1 py-2 rounded-lg bg-amber-500 text-slate-950 font-bold transition';
+    regBtn.className = 'flex-1 py-2 rounded-lg text-sub font-bold transition';
+    formLogin.classList.remove('hidden');
+    formReg.classList.add('hidden');
+  } else {
+    regBtn.className = 'flex-1 py-2 rounded-lg bg-emerald-500 text-slate-950 font-bold transition';
+    loginBtn.className = 'flex-1 py-2 rounded-lg text-sub font-bold transition';
+    formReg.classList.remove('hidden');
+    formLogin.classList.add('hidden');
+  }
+}
+
+function handleRegister(e) {
+  e.preventDefault();
+  const fullname = document.getElementById('reg-fullname').value.trim();
+  const username = document.getElementById('reg-username').value.trim().toLowerCase();
+  const password = document.getElementById('reg-password').value;
+
+  if (users.find(u => u.username === username)) {
+    alert('❌ Username sudah terdaftar! Gunakan username lain.');
+    return;
+  }
+
+  const newUser = { fullname, username, password };
+  users.push(newUser);
+  localStorage.setItem('warung_ibu_users', JSON.stringify(users));
+
+  // Auto login setelah daftar
+  currentUser = newUser;
+  localStorage.setItem('warung_ibu_current_user', JSON.stringify(currentUser));
+
+  document.getElementById('auth-screen').classList.add('hidden');
+  updateUserSidebarUI();
+  showToast('Akun berhasil dibuat!');
+  triggerFeedback('success');
+  checkShiftOnLoad();
+}
+
+function handleLogin(e) {
+  e.preventDefault();
+  const username = document.getElementById('login-username').value.trim().toLowerCase();
+  const password = document.getElementById('login-password').value;
+
+  const foundUser = users.find(u => u.username === username && u.password === password);
+
+  if (!foundUser) {
+    alert('❌ Username atau Password salah!');
+    return;
+  }
+
+  currentUser = foundUser;
+  localStorage.setItem('warung_ibu_current_user', JSON.stringify(currentUser));
+
+  document.getElementById('auth-screen').classList.add('hidden');
+  updateUserSidebarUI();
+  showToast('Selamat Datang, ' + foundUser.fullname);
+  triggerFeedback('success');
+  checkShiftOnLoad();
+}
+
+function handleLogout() {
+  if (confirm('Keluar dari aplikasi kasir?')) {
+    triggerFeedback();
+    currentUser = null;
+    localStorage.removeItem('warung_ibu_current_user');
+    location.reload();
+  }
+}
+
+function updateUserSidebarUI() {
+  const el = document.getElementById('sidebar-user-name');
+  if (el && currentUser) {
+    el.innerText = 'Kasir: ' + currentUser.fullname;
+  }
+}
 
 function isToday(dateString) {
   const d = new Date(dateString);
@@ -906,6 +1062,7 @@ function toggleTheme() {
 applyTheme(currentTheme);
 
 function checkShiftOnLoad() {
+  if (!currentUser) return;
   if (!currentShift) {
     document.getElementById('shift-open-modal').classList.remove('hidden');
     document.getElementById('shift-status-btn').classList.add('hidden');
@@ -1942,7 +2099,8 @@ function exportJSON() {
     expenses: allExpenses,
     shifts: allShiftHistory,
     target: dailyTarget,
-    pin: adminPin
+    pin: adminPin,
+    users: users
   }));
   const a = document.createElement('a');
   a.setAttribute("href", dataStr);
@@ -1965,6 +2123,7 @@ function importJSON(event) {
         if (imported.shifts) allShiftHistory = imported.shifts;
         if (imported.target) dailyTarget = imported.target;
         if (imported.pin) adminPin = imported.pin;
+        if (imported.users) users = imported.users;
         saveData();
         alert('✅ Data berhasil dipulihkan!');
         location.reload();
@@ -1975,6 +2134,7 @@ function importJSON(event) {
 }
 
 // Inisialisasi awal
+checkAuthOnLoad();
 checkLowStock();
 renderKasirProducts();
 renderCartUI();
