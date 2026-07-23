@@ -10,7 +10,6 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Warung Ibu">
-<link rel="manifest" href='data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22Warung%20Ibu%20Kasir%20Pro%22%2C%22short_name%22%3A%22WarungIbu%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230f172a%22%2C%22theme_color%22%3A%22%230b111e%22%7D'>
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -550,6 +549,15 @@
   <!-- ================= HALAMAN 7: PENGATURAN & BACKUP ================= -->
   <div id="page-settings" class="page-content hidden space-y-4">
     <section class="card-bg p-5 rounded-2xl border shadow-md space-y-4">
+      <h3 class="font-bold text-main text-sm">📱 Install Aplikasi (PWA Offline)</h3>
+      <p class="text-xs text-sub">Install aplikasi ini ke HP agar bisa dibuka langsung seperti aplikasi Android/iOS dan dapat digunakan secara offline tanpa internet.</p>
+      <button id="pwa-install-btn" onclick="installPWA()" class="w-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-black py-3.5 rounded-xl text-xs shadow flex justify-center items-center gap-2 touch-btn active:scale-95 hidden">
+        📥 Install Aplikasi ke HP
+      </button>
+      <p class="text-[10px] text-sub italic" id="pwa-status-hint">Jika tombol tidak muncul, pastikan Anda menggunakan Chrome/Edge/Safari dan akses halaman via HTTPS atau Localhost.</p>
+    </section>
+
+    <section class="card-bg p-5 rounded-2xl border shadow-md space-y-4">
       <h3 class="font-bold text-main text-sm">🔒 Keamanan PIN Admin</h3>
       <p class="text-xs text-sub">Atur atau ubah PIN untuk mengunci menu Kelola Stok, Laporan, & Audit Log.</p>
       <button onclick="changeAdminPinPrompt()" class="w-full card-inner border text-accent font-bold py-3.5 rounded-xl text-xs hover:border-amber-400 transition touch-btn active:scale-95">
@@ -589,6 +597,95 @@
 
 <!-- ====== JAVASCRIPT ENGINE ====== -->
 <script>
+// PWA Dynamic Manifest & Service Worker Setup for Offline & Standalone Mode
+if ('serviceWorker' in navigator) {
+  const swCode = `
+    const CACHE_NAME = 'warung-ibu-pwa-v1';
+    self.addEventListener('install', e => {
+      e.waitUntil(
+        caches.open(CACHE_NAME).then(cache => {
+          return cache.addAll(['./']);
+        })
+      );
+      self.skipWaiting();
+    });
+    self.addEventListener('activate', e => {
+      e.waitUntil(
+        caches.keys().then(keys => Promise.all(
+          keys.map(key => { if (key !== CACHE_NAME) return caches.delete(key); })
+        ))
+      );
+      self.clients.claim();
+    });
+    self.addEventListener('fetch', e => {
+      e.respondWith(
+        caches.match(e.request).then(cached => {
+          return cached || fetch(e.request).then(response => {
+            return caches.open(CACHE_NAME).then(cache => {
+              cache.put(e.request, response.clone());
+              return response;
+            });
+          }).catch(() => caches.match('./'));
+        })
+      );
+    });
+  `;
+  const blob = new Blob([swCode], { type: 'application/javascript' });
+  const swUrl = URL.createObjectURL(blob);
+  navigator.serviceWorker.register(swUrl).catch(err => console.log('SW error', err));
+}
+
+// Dynamic Web App Manifest
+const manifestData = {
+  "name": "Warung Ibu Kasir Pro",
+  "short_name": "WarungIbu",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0b111e",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2821/2821870.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+};
+const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/json' });
+const manifestURL = URL.createObjectURL(manifestBlob);
+const manifestLink = document.createElement('link');
+manifestLink.rel = 'manifest';
+manifestLink.href = manifestURL;
+document.head.appendChild(manifestLink);
+
+// Install Prompt Handler
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  const installBtn = document.getElementById('pwa-install-btn');
+  const hint = document.getElementById('pwa-status-hint');
+  if (installBtn) installBtn.classList.remove('hidden');
+  if (hint) hint.classList.add('hidden');
+});
+
+function installPWA() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        showToast('Aplikasi berhasil diinstal!');
+      }
+      deferredPrompt = null;
+      const installBtn = document.getElementById('pwa-install-btn');
+      if (installBtn) installBtn.classList.add('hidden');
+    });
+  } else {
+    alert('Aplikasi sudah terinstal atau browser Anda memerlukan izin tambahan. Anda juga bisa menggunakan menu "Tambahkan ke Layar Utama" di browser Anda.');
+  }
+}
+
 document.getElementById('current-date').innerText = new Date().toLocaleDateString('id-ID', {
   weekday: 'short', day: 'numeric', month: 'short', year: 'numeric'
 });
