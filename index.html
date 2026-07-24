@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Warung Ibu - Kasir v5.3 Ultimate Pro</title>
+<title>Warung Ibu - Kasir Pro v1.0 Gacor Edition</title>
 <meta name="theme-color" content="#090d16">
 
 <!-- PWA & Mobile App Meta Tags -->
@@ -13,7 +13,7 @@
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
   * {
@@ -22,52 +22,52 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  /* Custom Scrollbar */
+  /* Custom Scrollbar Modern */
   ::-webkit-scrollbar { width: 4px; height: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.2); border-radius: 10px; }
-  ::-webkit-scrollbar-thumb:hover { background: rgba(245, 158, 11, 0.5); }
+  ::-webkit-scrollbar-thumb { background: rgba(245, 158, 11, 0.3); border-radius: 10px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(245, 158, 11, 0.7); }
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-  /* ===== DARK MODE ===== */
-  .dark body { background-color: #090d16; color: #f1f5f9; }
-  .dark .app-bg { background-color: #090d16; }
-  .dark .card-bg { background-color: #131c2e; border-color: rgba(255, 255, 255, 0.08); }
-  .dark .card-inner { background-color: #0d1424; border-color: rgba(255, 255, 255, 0.06); }
-  .dark .header-bg { background-color: rgba(9, 13, 22, 0.85); border-color: rgba(245, 158, 11, 0.25); }
-  .dark .sidebar-bg { background-color: #0a0f1a; border-color: rgba(255, 255, 255, 0.08); }
+  /* ===== DARK MODE MODERN ===== */
+  .dark body { background-color: #070a12; color: #f1f5f9; }
+  .dark .app-bg { background-color: #070a12; }
+  .dark .card-bg { background-color: #111827; border-color: rgba(255, 255, 255, 0.08); box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); }
+  .dark .card-inner { background-color: #0b1120; border-color: rgba(255, 255, 255, 0.06); }
+  .dark .header-bg { background-color: rgba(11, 17, 32, 0.88); border-color: rgba(245, 158, 11, 0.25); }
+  .dark .sidebar-bg { background-color: #0b1120; border-color: rgba(255, 255, 255, 0.08); }
   .dark .text-main { color: #f8fafc; }
   .dark .text-sub { color: #94a3b8; }
   .dark .text-accent { color: #fbbf24; }
-  .dark .input-bg { background-color: #0d1424; border-color: rgba(255, 255, 255, 0.12); color: #f8fafc; }
-  .dark .input-bg:focus { border-color: #f59e0b; outline: none; box-shadow: 0 0 12px rgba(245, 158, 11, 0.2); }
-  .dark .btn-ghost { background-color: #131c2e; border-color: rgba(255, 255, 255, 0.08); color: #94a3b8; }
-  .dark .cat-inactive { background-color: #0d1424; color: #64748b; border-color: rgba(255, 255, 255, 0.08); }
-  .dark .overlay-bg { background-color: rgba(0, 0, 0, 0.75); }
-  .dark .item-row { background-color: #0d1424; border-color: rgba(255, 255, 255, 0.06); }
-  .dark .modal-bg { background-color: #131c2e; border-color: rgba(255, 255, 255, 0.12); color: #f8fafc; }
-  .dark .modal-inner { background-color: #0d1424; border-color: rgba(255, 255, 255, 0.08); }
+  .dark .input-bg { background-color: #0b1120; border-color: rgba(255, 255, 255, 0.12); color: #f8fafc; }
+  .dark .input-bg:focus { border-color: #f59e0b; outline: none; box-shadow: 0 0 15px rgba(245, 158, 11, 0.25); }
+  .dark .btn-ghost { background-color: #111827; border-color: rgba(255, 255, 255, 0.08); color: #94a3b8; }
+  .dark .cat-inactive { background-color: #0b1120; color: #64748b; border-color: rgba(255, 255, 255, 0.08); }
+  .dark .overlay-bg { background-color: rgba(3, 7, 18, 0.85); }
+  .dark .item-row { background-color: #0b1120; border-color: rgba(255, 255, 255, 0.06); }
+  .dark .modal-bg { background-color: #111827; border-color: rgba(255, 255, 255, 0.12); color: #f8fafc; }
+  .dark .modal-inner { background-color: #0b1120; border-color: rgba(255, 255, 255, 0.08); }
   .dark .section-divider { border-color: rgba(255, 255, 255, 0.08); }
 
-  /* ===== LIGHT MODE ===== */
+  /* ===== LIGHT MODE ELEGAN ===== */
   .light body { background-color: #f8fafc; color: #0f172a; }
   .light .app-bg { background-color: #f8fafc; }
-  .light .card-bg { background-color: #ffffff; border-color: #e2e8f0; box-shadow: 0 4px 20px -2px rgba(0,0,0,0.03); }
-  .light .card-inner { background-color: #f1f5f9; border-color: #e2e8f0; }
-  .light .header-bg { background-color: rgba(255, 255, 255, 0.88); border-color: rgba(217, 119, 6, 0.25); }
+  .light .card-bg { background-color: #ffffff; border-color: #e2e8f0; box-shadow: 0 8px 25px -5px rgba(0,0,0,0.05); }
+  .light .card-inner { background-color: #f1f5f9; border-color: #cbd5e1; }
+  .light .header-bg { background-color: rgba(255, 255, 255, 0.92); border-color: rgba(217, 119, 6, 0.25); }
   .light .sidebar-bg { background-color: #ffffff; border-color: #e2e8f0; }
   .light .text-main { color: #0f172a; }
   .light .text-sub { color: #64748b; }
   .light .text-accent { color: #d97706; }
-  .light .input-bg { background-color: #f1f5f9; border-color: #cbd5e1; color: #0f172a; }
-  .light .input-bg:focus { border-color: #d97706; outline: none; box-shadow: 0 0 10px rgba(217, 119, 6, 0.15); }
+  .light .input-bg { background-color: #f8fafc; border-color: #cbd5e1; color: #0f172a; }
+  .light .input-bg:focus { border-color: #d97706; outline: none; box-shadow: 0 0 12px rgba(217, 119, 6, 0.2); }
   .light .btn-ghost { background-color: #f1f5f9; border-color: #e2e8f0; color: #64748b; }
   .light .cat-inactive { background-color: #f1f5f9; color: #64748b; border-color: #cbd5e1; }
-  .light .overlay-bg { background-color: rgba(15, 23, 42, 0.4); }
+  .light .overlay-bg { background-color: rgba(15, 23, 42, 0.5); }
   .light .item-row { background-color: #f8fafc; border-color: #e2e8f0; }
-  .light .modal-bg { background-color: #ffffff; border-color: #e2e8f0; color: #0f172a; }
-  .light .modal-inner { background-color: #f8fafc; border-color: #e2e8f0; }
+  .light .modal-bg { background-color: #ffffff; border-color: #cbd5e1; color: #0f172a; }
+  .light .modal-inner { background-color: #f1f5f9; border-color: #e2e8f0; }
   .light .section-divider { border-color: #e2e8f0; }
 
   /* Touch Adjustments & Animations */
@@ -77,20 +77,20 @@
   .modal-overlay {
     position: fixed; inset: 0; z-index: 9999;
     display: flex; align-items: center; justify-content: center;
-    background: rgba(3, 7, 18, 0.82); backdrop-filter: blur(8px);
+    background: rgba(3, 7, 18, 0.85); backdrop-filter: blur(10px);
   }
 
   @keyframes pulse-amber {
     0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.03); opacity: 0.85; }
+    50% { transform: scale(1.04); opacity: 0.85; }
   }
   .animate-pulse-glow { animation: pulse-amber 2.5s ease-in-out infinite; }
 
   body, .card-bg, .header-bg, .sidebar-bg, .input-bg, .modal-bg {
-    transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+    transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
   }
 
-  /* Responsive Landscape Mode Adjustments */
+  /* Responsive Landscape Adjustments */
   @media (orientation: landscape) and (max-height: 768px) {
     .app-container { max-width: 100% !important; padding-left: 1.5rem; padding-right: 1.5rem; }
     #page-kasir.page-content { display: grid; grid-template-columns: 1.2fr 1fr; gap: 1.25rem; align-items: start; }
@@ -98,6 +98,13 @@
     #page-kasir > section:nth-child(4) { grid-column: span 2; }
     #kasir-products-grid { max-height: 50vh !important; }
     #cart-items-list { max-height: 30vh !important; }
+  }
+
+  /* Print Struk CSS */
+  @media print {
+    body * { visibility: hidden; }
+    #print-receipt-area, #print-receipt-area * { visibility: visible; }
+    #print-receipt-area { position: absolute; left: 0; top: 0; width: 100%; color: #000 !important; background: #fff !important; padding: 15px; }
   }
 </style>
 
@@ -108,23 +115,24 @@
   })();
 </script>
 </head>
-<body class="app-bg text-main pb-24 min-h-screen antialiased">
+<body class="app-bg text-main pb-24 min-h-screen antialiased selection:bg-amber-500 selection:text-slate-950">
 
 <!-- ====== TAMPILAN AUTH (LOGIN & DAFTAR) ====== -->
 <div id="auth-screen" class="fixed inset-0 z-[10000] app-bg flex items-center justify-center p-4">
-  <div class="card-bg p-7 rounded-3xl w-full max-w-sm border shadow-2xl space-y-5">
-    <div class="text-center">
-      <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-500/20 to-amber-400/10 text-3xl mb-3 border border-amber-500/30">
+  <div class="card-bg p-7 rounded-3xl w-full max-w-sm border shadow-2xl space-y-5 relative overflow-hidden">
+    <div class="absolute -top-10 -right-10 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl"></div>
+    <div class="text-center relative">
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-500/20 to-amber-400/10 text-3xl mb-3 border border-amber-500/30 shadow-inner">
         🏪
       </div>
       <h2 class="text-2xl font-black text-amber-500 tracking-tight">Warung Ibu</h2>
-      <p class="text-xs text-sub font-medium mt-1">Aplikasi Kasir Pro Offline v5.3</p>
+      <p class="text-xs text-sub font-semibold mt-1">Aplikasi Kasir v1.0 Pro Gacor</p>
     </div>
 
     <!-- TAB LOGIN / DAFTAR -->
     <div class="flex card-inner p-1.5 rounded-2xl border text-xs font-extrabold">
-      <button id="auth-tab-login" onclick="switchAuthTab('login')" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 transition shadow-md">Login</button>
-      <button id="auth-tab-register" onclick="switchAuthTab('register')" class="flex-1 py-2.5 rounded-xl text-sub transition">Daftar</button>
+      <button id="auth-tab-login" onclick="switchAuthTab('login')" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 transition shadow-md font-black">Login</button>
+      <button id="auth-tab-register" onclick="switchAuthTab('register')" class="flex-1 py-2.5 rounded-xl text-sub transition font-bold">Daftar</button>
     </div>
 
     <!-- FORM LOGIN -->
@@ -138,7 +146,7 @@
         <input type="password" id="login-password" placeholder="••••••••" required class="input-bg w-full border p-3.5 rounded-xl text-xs font-semibold">
       </div>
       <button type="submit" class="w-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-black py-4 rounded-xl text-xs active:scale-95 transition shadow-lg shadow-amber-500/20 tracking-wider">
-        MASUK KE KASIR
+        MASUK KE KASIR 🚀
       </button>
     </form>
 
@@ -284,15 +292,34 @@
   </div>
 </div>
 
+<!-- ====== MODAL: CETAK STRUK ====== -->
+<div id="receipt-modal" class="modal-overlay hidden">
+  <div class="modal-bg rounded-3xl p-5 w-80 max-w-[92vw] shadow-2xl border border-amber-500/30 space-y-4">
+    <div class="flex justify-between items-center section-divider border-b pb-2">
+      <h3 class="font-black text-amber-500 text-sm flex items-center gap-1.5">🧾 Struk Transaksi</h3>
+      <button onclick="document.getElementById('receipt-modal').classList.add('hidden')" class="text-sub hover:text-main text-lg font-bold">✕</button>
+    </div>
+    <div id="print-receipt-area" class="card-inner p-4 rounded-2xl border text-xs space-y-3 font-mono text-main">
+      <!-- Isi Struk Dimuat Otomatis JS -->
+    </div>
+    <div class="grid grid-cols-2 gap-2">
+      <button onclick="window.print()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl text-xs transition active:scale-95 shadow">🖨️ Cetak / PDF</button>
+      <button onclick="document.getElementById('receipt-modal').classList.add('hidden')" class="w-full bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 font-black py-3 rounded-xl text-xs transition active:scale-95 shadow">Selesai</button>
+    </div>
+  </div>
+</div>
+
 <!-- ====== HEADER ====== -->
 <header class="header-bg text-main p-3.5 sticky top-0 z-30 border-b shadow-lg backdrop-blur-md">
   <div class="max-w-md mx-auto flex justify-between items-center">
     <div class="flex items-center gap-3">
-      <button onclick="toggleSidebar()" class="text-xl font-black text-amber-500 active:scale-90 transition touch-btn flex items-center justify-center w-10 h-10 rounded-xl btn-ghost border">
+      <button onclick="toggleSidebar()" class="text-xl font-black text-amber-500 active:scale-90 transition touch-btn flex items-center justify-center w-10 h-10 rounded-xl btn-ghost border shadow-sm">
         ☰
       </button>
       <div>
-        <h1 class="text-sm font-black text-amber-500 tracking-wide" id="page-title">Kasir Penjualan</h1>
+        <h1 class="text-sm font-black text-amber-500 tracking-wide flex items-center gap-1.5" id="page-title">
+          <span>Kasir Penjualan</span>
+        </h1>
         <p class="text-[10px] text-sub font-semibold mt-0.5" id="current-date">Hari ini</p>
       </div>
     </div>
@@ -322,8 +349,8 @@
   <div>
     <div class="flex justify-between items-center mb-5 section-divider border-b pb-3.5">
       <div>
-        <h2 class="font-black text-base text-amber-500">🏪 Warung Ibu</h2>
-        <p class="text-[11px] text-sub font-medium" id="sidebar-user-name">Kasir Pro v5.3</p>
+        <h2 class="font-black text-base text-amber-500 flex items-center gap-1.5">🏪 Warung Ibu</h2>
+        <p class="text-[11px] text-sub font-medium" id="sidebar-user-name">Kasir Pro v1.0 Gacor</p>
       </div>
       <button onclick="toggleSidebar()" class="text-sub hover:text-main text-lg font-bold p-1">✕</button>
     </div>
@@ -361,6 +388,12 @@
         <span class="text-[9px] btn-ghost border px-2 py-0.5 rounded-md font-bold text-amber-500">PIN</span>
       </button>
       
+      <!-- MENU BARU: TENTANG APLIKASI -->
+      <button onclick="switchPage('about', 'Tentang Aplikasi & Update')" class="w-full text-left p-3 rounded-xl flex items-center justify-between hover:bg-amber-500/10 active:bg-amber-500 active:text-slate-950 text-main font-bold text-xs transition touch-btn border border-amber-500/20 bg-amber-500/5">
+        <span class="flex items-center gap-3"><span class="text-base">ℹ️</span> Tentang Aplikasi</span>
+        <span class="text-[9px] bg-amber-500/20 text-amber-500 px-2 py-0.5 rounded-md font-extrabold border border-amber-500/30">NEW</span>
+      </button>
+      
       <div class="pt-3 section-divider border-t mt-2">
         <button onclick="handleLogout()" class="w-full text-left p-3 rounded-xl flex items-center gap-3 bg-rose-500/10 text-rose-400 font-bold text-xs transition touch-btn border border-rose-500/20">
           <span class="text-base">🚪</span> Keluar / Logout
@@ -368,8 +401,8 @@
       </div>
     </nav>
   </div>
-  <div class="text-[10px] text-sub text-center section-divider border-t pt-3 font-semibold">
-    Warung Ibu v5.3 • Ultimate Offline Engine
+  <div class="text-[10px] text-sub text-center section-divider border-t pt-3 font-bold">
+    Warung Ibu v1.0 • Ultimate Offline Engine
   </div>
 </aside>
 
@@ -480,7 +513,7 @@
 
         <!-- Submit Checkout -->
         <button onclick="checkoutCart()" class="w-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 active:scale-95 text-slate-950 font-black py-4 rounded-2xl shadow-lg shadow-amber-500/20 transition text-xs flex justify-center items-center gap-2 touch-btn-lg tracking-wider">
-          SELESAIKAN TRANSAKSI
+          SELESAIKAN TRANSAKSI 🚀
         </button>
       </div>
     </section>
@@ -702,13 +735,93 @@
     </section>
   </div>
 
+  <!-- ================= HALAMAN 8: TENTANG APLIKASI (FITUR BARU v1.0) ================= -->
+  <div id="page-about" class="page-content hidden space-y-4">
+    <!-- Card Utama Aplikasi -->
+    <section class="card-bg p-6 rounded-3xl border shadow-xl text-center space-y-3 relative overflow-hidden">
+      <div class="absolute -top-12 -left-12 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl"></div>
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-500/20 to-amber-400/10 text-3xl mb-1 border border-amber-500/30">
+        🏪
+      </div>
+      <div>
+        <h2 class="text-xl font-black text-amber-500">Warung Ibu Kasir Pro</h2>
+        <span class="inline-block bg-amber-500/20 text-amber-500 text-[10px] font-black px-3 py-1 rounded-full border border-amber-500/30 mt-1">Versi 1.0 (Gacor Edition)</span>
+      </div>
+      <p class="text-xs text-sub leading-relaxed">
+        Sistem Kasir Pintar Offline & POS Manajemen Warung modern, cepat, akurat, dan dirancang tanpa ketergantungan internet.
+      </p>
+    </section>
+
+    <!-- Card Status Sistem -->
+    <section class="grid grid-cols-2 gap-3">
+      <div class="card-bg p-4 rounded-2xl border text-center space-y-1">
+        <span class="text-2xl">⚡</span>
+        <p class="text-[10px] text-sub font-bold uppercase">Engine Status</p>
+        <p class="text-xs font-black text-emerald-400">Full Offline Ready</p>
+      </div>
+      <div class="card-bg p-4 rounded-2xl border text-center space-y-1">
+        <span class="text-2xl">🔒</span>
+        <p class="text-[10px] text-sub font-bold uppercase">Keamanan Data</p>
+        <p class="text-xs font-black text-amber-500">Local Encrypted</p>
+      </div>
+    </section>
+
+    <!-- Card Pemberitahuan Update Selanjutnya (Roadmap Update) -->
+    <section class="card-bg p-5 rounded-2xl border shadow-sm space-y-4">
+      <div class="flex justify-between items-center section-divider border-b pb-3">
+        <div>
+          <h3 class="font-black text-amber-500 text-xs flex items-center gap-1.5">📢 Pemberitahuan Update Selanjutnya</h3>
+          <p class="text-[10px] text-sub mt-0.5">Rencana pengembangan & fitur baru versi mendatang</p>
+        </div>
+        <span class="bg-blue-500/20 text-blue-400 text-[9px] font-black px-2.5 py-1 rounded-full border border-blue-500/30">ROADMAP</span>
+      </div>
+
+      <div class="space-y-3">
+        <!-- Item Roadmap 1 -->
+        <div class="card-inner p-3.5 rounded-xl border space-y-1.5">
+          <div class="flex justify-between items-center">
+            <span class="font-black text-xs text-main flex items-center gap-1.5">🖨️ Cetak Struk Bluetooth Thermal</span>
+            <span class="bg-amber-500/20 text-amber-500 text-[9px] font-extrabold px-2 py-0.5 rounded">v1.1 (Coming Soon)</span>
+          </div>
+          <p class="text-[11px] text-sub">Integrasi langsung cetak nota ke printer thermal mini via Bluetooth tanpa perlu install driver tambahan.</p>
+        </div>
+
+        <!-- Item Roadmap 2 -->
+        <div class="card-inner p-3.5 rounded-xl border space-y-1.5">
+          <div class="flex justify-between items-center">
+            <span class="font-black text-xs text-main flex items-center gap-1.5">☁️ Sync Cloud Multi-Perangkat</span>
+            <span class="bg-slate-700/40 text-sub text-[9px] font-extrabold px-2 py-0.5 rounded">v1.2 (Planned)</span>
+          </div>
+          <p class="text-[11px] text-sub">Opsi pencadangan data otomatis ke Google Drive / Cloud agar kasir dapat diakses dari beberapa HP secara simultan.</p>
+        </div>
+
+        <!-- Item Roadmap 3 -->
+        <div class="card-inner p-3.5 rounded-xl border space-y-1.5">
+          <div class="flex justify-between items-center">
+            <span class="font-black text-xs text-main flex items-center gap-1.5">📱 QRIS Dynamic Automatic Detect</span>
+            <span class="bg-slate-700/40 text-sub text-[9px] font-extrabold px-2 py-0.5 rounded">v1.3 (Planned)</span>
+          </div>
+          <p class="text-[11px] text-sub">Generate kode QRIS otomatis sesuai jumlah belanjaan pelanggan secara instan di layar HP kasir.</p>
+        </div>
+
+        <!-- Placeholder Catatan Tambahan (Bisa Diisi Nanti) -->
+        <div class="p-4 rounded-xl border border-dashed border-amber-500/30 bg-amber-500/5 text-center space-y-1">
+          <p class="text-xs font-black text-amber-500">📝 Ruang Isian Update Lanjutan</p>
+          <p class="text-[10px] text-sub italic">
+            (Catatan update tambahan dari Anda dapat disisipkan langsung di bagian kode HTML halaman ini secara mudah).
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
+
 </main>
 
 <!-- ====== JAVASCRIPT ENGINE ====== -->
 <script>
 // ===== ENGINE PWA NETWORK-FIRST (AUTO-UPDATE OFFLINE) =====
 if ('serviceWorker' in navigator) {
-  const APP_VERSION = 'v5.3-offline-1';
+  const APP_VERSION = 'v1.0-gacor-offline';
   const swCode = `
     const CACHE_NAME = 'warung-ibu-${APP_VERSION}';
 
@@ -758,18 +871,18 @@ if ('serviceWorker' in navigator) {
     const swUrl = URL.createObjectURL(blob);
     navigator.serviceWorker.register(swUrl).then(reg => {
       reg.update();
-    }).catch(err => console.log('SW Registration error:', err));
+    }).catch(err => console.log('SW Registration info:', err));
   } catch(e) {}
 }
 
 // Dynamic Web App Manifest
 const manifestData = {
-  "name": "Warung Ibu Kasir Pro v5.3",
+  "name": "Warung Ibu Kasir Pro v1.0",
   "short_name": "WarungIbu",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#090d16",
-  "theme_color": "#090d16",
+  "background_color": "#070a12",
+  "theme_color": "#070a12",
   "icons": [
     {
       "src": "https://cdn-icons-png.flaticon.com/512/2821/2821870.png",
@@ -844,6 +957,12 @@ let chartInstance = null;
 let givenCashAmount = 0;
 let currentTheme = localStorage.getItem('warung_ibu_theme') || 'dark';
 
+// INITIALIZATION
+window.addEventListener('DOMContentLoaded', () => {
+  checkAuthOnLoad();
+  applyTheme(currentTheme);
+});
+
 // ===== LOGIKA AUTHENTICATION =====
 function checkAuthOnLoad() {
   const authScreen = document.getElementById('auth-screen');
@@ -864,13 +983,13 @@ function switchAuthTab(tab) {
   const formReg = document.getElementById('form-register');
 
   if (tab === 'login') {
-    loginBtn.className = 'flex-1 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 transition shadow-md';
-    regBtn.className = 'flex-1 py-2.5 rounded-xl text-sub transition';
+    loginBtn.className = 'flex-1 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 transition shadow-md font-black';
+    regBtn.className = 'flex-1 py-2.5 rounded-xl text-sub transition font-bold';
     formLogin.classList.remove('hidden');
     formReg.classList.add('hidden');
   } else {
-    regBtn.className = 'flex-1 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white transition shadow-md';
-    loginBtn.className = 'flex-1 py-2.5 rounded-xl text-sub transition';
+    regBtn.className = 'flex-1 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white transition shadow-md font-black';
+    loginBtn.className = 'flex-1 py-2.5 rounded-xl text-sub transition font-bold';
     formReg.classList.remove('hidden');
     formLogin.classList.add('hidden');
   }
@@ -1493,6 +1612,9 @@ function checkoutCart() {
   triggerFeedback('success');
   showToast('Transaksi Sukses Tercatat!');
 
+  // Tampilkan Modal Struk Belanja
+  renderReceiptModal(newTx);
+
   // Reset Form
   cart = [];
   givenCashAmount = 0;
@@ -1507,6 +1629,56 @@ function checkoutCart() {
   renderCartUI();
   renderKasirPage();
   updateTargetUI();
+}
+
+function renderReceiptModal(tx) {
+  const area = document.getElementById('print-receipt-area');
+  if (!area) return;
+  const dt = new Date(tx.date).toLocaleString('id-ID');
+  
+  let itemRows = tx.items.map(i => `
+    <div class="flex justify-between text-[11px]">
+      <span>${i.qty}x ${i.name}</span>
+      <span>Rp ${(i.price * i.qty).toLocaleString('id-ID')}</span>
+    </div>
+  `).join('');
+
+  area.innerHTML = `
+    <div class="text-center section-divider border-b pb-2">
+      <p class="font-black text-sm">WARUNG IBU</p>
+      <p class="text-[10px]">Jl. Raya Warung Ibu Kasir Pro v1.0</p>
+      <p class="text-[10px] text-sub mt-0.5">${dt}</p>
+    </div>
+    <div class="text-[10px] space-y-0.5">
+      <p>Kasir: <span class="font-bold">${currentUser ? currentUser.fullname : 'Kasir'}</span></p>
+      <p>Pelanggan: <span class="font-bold">${tx.customerName}</span></p>
+      <p>Metode: <span class="font-bold">${tx.payment}</span></p>
+    </div>
+    <div class="section-divider border-t border-b py-2 space-y-1">
+      ${itemRows}
+    </div>
+    <div class="space-y-1 text-xs">
+      <div class="flex justify-between font-black">
+        <span>TOTAL:</span>
+        <span>Rp ${tx.subtotalOmzet.toLocaleString('id-ID')}</span>
+      </div>
+      ${tx.payment === 'Cash' ? `
+        <div class="flex justify-between text-[11px] text-sub">
+          <span>Tunai:</span>
+          <span>Rp ${tx.cashGiven.toLocaleString('id-ID')}</span>
+        </div>
+        <div class="flex justify-between text-[11px] text-sub">
+          <span>Kembali:</span>
+          <span>Rp ${tx.changeAmount.toLocaleString('id-ID')}</span>
+        </div>
+      ` : ''}
+    </div>
+    <div class="text-center pt-2 text-[10px] text-sub italic">
+      --- Terima Kasih Atas Kunjungan Anda ---
+    </div>
+  `;
+
+  document.getElementById('receipt-modal').classList.remove('hidden');
 }
 
 function renderKasirPage() {
@@ -1536,6 +1708,7 @@ function renderKasirPage() {
         </div>
         <div class="flex items-center gap-2 ml-2">
           <p class="font-bold text-amber-500 text-xs">Rp ${t.subtotalOmzet.toLocaleString('id-ID')}</p>
+          <button onclick="renderReceiptModal(allTransactions.find(x => x.id === ${t.id}))" class="text-sub hover:text-amber-500 font-bold p-1 touch-btn text-base" title="Cetak Struk">🧾</button>
           <button onclick="deleteTransaction(${t.id})" class="text-sub hover:text-rose-400 font-bold p-1 touch-btn text-base" title="Batalkan Transaksi">🗑️</button>
         </div>
       </div>
@@ -1955,7 +2128,7 @@ function exportExcel() {
       .text-right { text-align: right; }
     </style></head>
     <body>
-      <div class="header-title">🏪 LAPORAN KEUANGAN - WARUNG IBU PRO v5.3</div>
+      <div class="header-title">🏪 LAPORAN KEUANGAN - WARUNG IBU PRO v1.0</div>
       <div>Waktu Export: ${timeString}</div>
       <h3>Riwayat Transaksi Penjualan</h3>
       <table>
@@ -2005,35 +2178,23 @@ function importJSON(event) {
   reader.onload = function(e) {
     try {
       const imported = JSON.parse(e.target.result);
-      if (imported.products && imported.transactions) {
-        allProducts = imported.products;
-        allTransactions = imported.transactions;
-        if (imported.deletedTransactions) allDeletedTransactions = imported.deletedTransactions;
-        if (imported.expenses) allExpenses = imported.expenses;
-        if (imported.shifts) allShiftHistory = imported.shifts;
-        if (imported.target) dailyTarget = imported.target;
-        if (imported.pin) adminPin = imported.pin;
-        if (imported.users) users = imported.users;
-        saveData();
-        alert('✅ Data berhasil di-restore secara sempurna!');
-        location.reload();
-      } else {
-        alert('❌ Format file backup JSON tidak valid!');
-      }
+      if (imported.products) allProducts = imported.products;
+      if (imported.transactions) allTransactions = imported.transactions;
+      if (imported.deletedTransactions) allDeletedTransactions = imported.deletedTransactions;
+      if (imported.expenses) allExpenses = imported.expenses;
+      if (imported.shifts) allShiftHistory = imported.shifts;
+      if (imported.target) dailyTarget = imported.target;
+      if (imported.pin) adminPin = imported.pin;
+      if (imported.users) users = imported.users;
+      saveData();
+      alert('✅ Data berhasil di-restore dari file backup!');
+      location.reload();
     } catch(err) {
-      alert('❌ Gagal membaca file backup JSON!');
+      alert('❌ File JSON tidak valid atau rusak!');
     }
   };
   reader.readAsText(file);
 }
-
-// INSIALISASI AWAL APLIKASI
-window.addEventListener('DOMContentLoaded', () => {
-  checkAuthOnLoad();
-  checkLowStock();
-  updateTargetUI();
-  refreshActiveViews();
-});
 </script>
 </body>
 </html>
